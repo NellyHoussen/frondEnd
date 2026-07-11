@@ -15,5 +15,5 @@ public interface ReservationImplements {
     ReservationDTO changerStatut(Long id, StatutReservation newStatuts);
     void annuler(Long id);
     ReservationDTO creerAvecMiseAJourClient(ClientDTO clientDto, ReservationCreateDTO reservationDto);
-
+    void supprimer(Long id);
 }

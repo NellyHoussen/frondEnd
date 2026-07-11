@@ -49,11 +49,18 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.changerStatut(id, valeur));
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}/annuler")
     public ResponseEntity<Void> annuler(@PathVariable Long id) {
         reservationService.annuler(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> supprimer(@PathVariable Long id) {
+        reservationService.supprimer(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/complete")
     public ResponseEntity<ReservationDTO> creerReservationComplete(
             @Valid @RequestBody ReservationCompleteDTO dto) {

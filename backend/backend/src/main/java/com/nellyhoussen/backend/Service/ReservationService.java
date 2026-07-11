@@ -42,6 +42,7 @@ public class ReservationService implements ReservationImplements {
             StatutReservation.TERMINEE, EnumSet.noneOf(StatutReservation.class),
             StatutReservation.ANNULEE, EnumSet.noneOf(StatutReservation.class)
     );
+
     @Override
     public ReservationDTO creer(ReservationCreateDTO dto) {
         if(!dto.dateFin().isAfter(dto.dateDebut())){
@@ -73,8 +74,9 @@ public class ReservationService implements ReservationImplements {
     @Override
     @Transactional(readOnly = true)
     public ReservationDTO findById(Long id) {
-        return   reservationMapper.toDTO(findBy(id));
+        return reservationMapper.toDTO(findBy(id));
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<ReservationDTO> findAll() {
@@ -83,15 +85,15 @@ public class ReservationService implements ReservationImplements {
                 .map(reservationMapper::toDTO)
                 .toList();
     }
+
     @Override
     public List<ReservationDTO> findByClient(Long clientId) {
         return this.reservationRepository.findByClientId(clientId)
                 .stream()
                 .map(reservationMapper::toDTO)
                 .toList();
-
-
     }
+
     @Override
     public ReservationDTO changerStatut(Long id, StatutReservation nouveauStatut) {
         Reservation reservation = findBy(id);
@@ -104,9 +106,21 @@ public class ReservationService implements ReservationImplements {
         reservation.setStatut(nouveauStatut);
         return reservationMapper.toDTO(reservationRepository.save(reservation));
     }
+
     @Override
     public void annuler(Long id) {
         changerStatut(id, StatutReservation.ANNULEE);
+    }
+
+    @Override
+    public void supprimer(Long id) {
+        Reservation reservation = findBy(id);
+        if (reservation.getStatut() != StatutReservation.ANNULEE
+                && reservation.getStatut() != StatutReservation.REJETE) {
+            throw new BusinessRuleException(
+                    "Seules les réservations annulées ou rejetées peuvent être supprimées définitivement");
+        }
+        reservationRepository.delete(reservation);
     }
 
     @Override
@@ -117,6 +131,6 @@ public class ReservationService implements ReservationImplements {
 
     private Reservation findBy(Long id){
         return this.reservationRepository.findById(id)
-                .orElseThrow(() -> RessourceNotFoundException.pour("message",id));
+                .orElseThrow(() -> RessourceNotFoundException.pour("message", id));
     }
 }
