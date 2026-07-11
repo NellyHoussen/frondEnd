@@ -1,133 +1,123 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
 const CARDS_DATA = [
   {
-    title: "Une voiture neuve",
-    desc: "Un véhicule neuf, sorti d'usine, à votre nom et qui n'attend que vous. Vous avez la possibilité de choisir le modèle, ainsi que la motorisation et la transmission (manuelle, automatique, 4x4) à votre goût.",
-    bgImage: "/images/Neo.jpg"
+    title: "Véhicules fiables",
+    desc: "Réservez une voiture propre, confortable et prête à prendre la route. NOMADE sélectionne des véhicules adaptés aux déplacements en ville, aux voyages en famille et aux trajets longue distance à Madagascar.",
+    bgImage: "/images/Neo.jpg",
   },
   {
-    title: "Une assistance 24H/24 et 7J/7",
-    desc: "Partez l'esprit tranquille. Vous bénéficiez d'une couverture complète avec assistance zéro kilomètre disponible à tout moment, de jour comme de nuit, partout en Europe pour pallier le moindre imprévu.",
-    bgImage: "/images/voyager.jpg"
+    title: "Assistance disponible",
+    desc: "Voyagez avec plus de tranquillité grâce à une assistance disponible en cas d’imprévu. Notre équipe vous accompagne avant, pendant et après votre réservation.",
+    bgImage: "/images/voyager.jpg",
   },
   {
-    title: "Une livraison sur mesure",
-    desc: "Choisissez le lieu de prise en charge idéal parmi nos nombreux centres de livraison. Votre véhicule sera rigoureusement préparé et disponible dès votre arrivée pour commencer votre trajet sans attente.",
-    bgImage: "/images/travel.jpg"
+    title: "Réservation simple",
+    desc: "Choisissez votre voiture, indiquez vos dates, puis envoyez votre demande en quelques clics. Une solution rapide et claire pour organiser vos déplacements sans complication.",
+    bgImage: "/images/travel.jpg",
   },
   {
-    title: "Conducteur additionnel sans surcoût",
-    desc: "Partagez le plaisir de conduire tout au long de votre voyage. Ajoutez gratuitement autant de conducteurs que nécessaire sur votre contrat tout en profitant des mêmes garanties d'assurance.",
-    bgImage: "/images/Conducteurjpg"
+    title: "Conducteur flexible",
+    desc: "Selon vos besoins, vous pouvez organiser votre location avec ou sans conducteur. Une option pratique pour les voyages professionnels, touristiques ou familiaux.",
+    bgImage: "/images/Conducteur.jpg",
   },
   {
-    title: "Changement centre de restitution simple appel",
-    desc: "Vos projets changent en cours de route ? Modifiez votre lieu de restitution d'un simple coup de téléphone. Profitez d'une flexibilité maximale pour réorganiser votre voyage sans stress.",
-    bgImage: "/images/vanFamiliale.jpg"
-  }
+    title: "Trajets sur mesure",
+    desc: "Départ, retour, durée, destination : adaptez votre réservation à votre programme. NOMADE vous aide à trouver la solution la plus pratique pour votre trajet.",
+    bgImage: "/images/vanFamiliale.jpg",
+  },
 ];
 
-function AvantageSliper() {
+function AvantageSlider() {
   return (
-    <div className="bg-black text-white py-16 px-6 md:px-12 lg:px-24 font-sans select-none overflow-hidden">
+    <section className="overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-6 py-16 text-slate-900 md:px-12 lg:px-24">
+      <div className="mx-auto mb-10 flex max-w-7xl items-end justify-between gap-6">
+        <div>
+          <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+            Pourquoi choisir NOMADE
+          </p>
 
-      {/* --- EN-TÊTE : Titre + Boutons --- */}
-      <div className="flex items-center justify-between mb-10 max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight flex items-baseline">
-          Les avantages T&apos;T Eurodrive
-          <span className="text-orange-600 ml-1 text-4xl">.</span>
-        </h2>
+          <h2 className="max-w-3xl text-3xl font-black uppercase leading-tight tracking-wide text-slate-950 md:text-5xl">
+            Louez facilement, voyagez sereinement
+            <span className="text-amber-500">.</span>
+          </h2>
+        </div>
 
-        {/* Vos flèches de navigation personnalisées */}
-        <div className="flex gap-3 shrink-0 z-20">
+        <div className="flex shrink-0 gap-3">
           <button
             type="button"
             aria-label="Slide précédent"
-            className="avantage-prev w-12 h-12 rounded-full bg-neutral-700 hover:bg-neutral-600 text-white flex items-center justify-center transition disabled:opacity-40"
+            className="avantage-prev flex h-12 w-12 items-center justify-center rounded-full border border-emerald-100 bg-white text-emerald-700 shadow-sm transition hover:bg-emerald-600 hover:text-white disabled:opacity-40"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
+            <FiArrowLeft className="text-xl" />
           </button>
+
           <button
             type="button"
             aria-label="Slide suivant"
-            className="avantage-next w-12 h-12 rounded-full bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center transition disabled:opacity-40"
+            className="avantage-next flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-700 disabled:opacity-40"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
+            <FiArrowRight className="text-xl" />
           </button>
         </div>
       </div>
 
-      {/* --- CARROUSEL --- */}
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <Swiper
           modules={[Navigation]}
-          spaceBetween={20}
-          slidesPerView={1.15}
+          spaceBetween={24}
+          slidesPerView={1.1}
           navigation={{
-            prevEl: '.avantage-prev',
-            nextEl: '.avantage-next',
+            prevEl: ".avantage-prev",
+            nextEl: ".avantage-next",
           }}
           breakpoints={{
-            480: { slidesPerView: 1.5 },
-            640: { slidesPerView: 2.2 },
-            1024: { slidesPerView: 3.5 },
-            1280: { slidesPerView: 4.2 },
+            480: { slidesPerView: 1.25 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 3.6 },
           }}
-          className="w-full h-[480px] !overflow-visible"
+          className="!overflow-visible"
         >
-          {CARDS_DATA.map((card) => {
-            const lastSpaceIndex = card.title.lastIndexOf(' ');
-            const titleFirst = card.title.substring(0, lastSpaceIndex);
-            const titleHighlight = card.title.substring(lastSpaceIndex + 1);
+          {CARDS_DATA.map((card, index) => (
+            <SwiperSlide key={card.title} className="group cursor-pointer">
+              <article className="relative h-[430px] overflow-hidden rounded-[1.75rem] bg-slate-900 shadow-xl shadow-emerald-900/15">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${card.bgImage})` }}
+                />
 
-            return (
-              <SwiperSlide key={card.title} className="cursor-pointer group">
-                <div className="relative w-full h-full overflow-hidden bg-neutral-900 border border-neutral-800 rounded-sm">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-slate-950/5" />
 
-                  
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${card.bgImage})` }}
-                  />
+                <div className="absolute inset-0 bg-emerald-600/0 transition duration-300 group-hover:bg-emerald-600/15" />
 
-                 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 transition-opacity duration-300 group-hover:opacity-40" />
+                <div className="relative z-10 flex h-full flex-col justify-between p-6">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-sm font-black text-amber-200 ring-1 ring-white/20 backdrop-blur">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
-                  {/* Calque Orange fusion au hover */}
-                  <div className="absolute inset-0 bg-orange-600 mix-blend-multiply opacity-0 transition-opacity duration-300 group-hover:opacity-95" />
-
-                  {/* Contenu textuel */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-start z-10 select-text">
-                    <h3 className="text-2xl font-black font-sans tracking-wide leading-tight mb-4 text-white uppercase">
-                      {titleFirst}{' '}
-                      <span className="text-orange-500 transition-colors duration-300 group-hover:text-black">
-                        {titleHighlight}
-                      </span>
+                  <div>
+                    <h3 className="mb-4 text-2xl font-black uppercase leading-tight tracking-wide text-white">
+                      {card.title}
                     </h3>
 
-                    <p className="text-sm leading-relaxed text-neutral-200 opacity-0 transform translate-y-3 transition-all duration-300 md:group-hover:opacity-100 md:group-hover:translate-y-0 delay-75 group-hover:text-white font-medium">
+                    <p className="text-sm font-medium leading-relaxed text-white/90 transition duration-300">
                       {card.desc}
                     </p>
                   </div>
-
                 </div>
-              </SwiperSlide>
-            );
-          })}
+              </article>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
-
-    </div>
+    </section>
   );
 }
 
-export default AvantageSliper;
+export default AvantageSlider;

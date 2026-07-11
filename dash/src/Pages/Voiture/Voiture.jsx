@@ -1,5 +1,6 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiArrowRight, FiCheckCircle, FiImage } from "react-icons/fi";
 
 import { voitureService, getImageUrl } from "../../services/api";
 
@@ -7,10 +8,13 @@ function VoituresSuggerees({ nombre = 100 }) {
   const [voitures, setVoitures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
   const handleChoisir = (voitureId) => {
     navigate(`/reservation/${voitureId}`);
   };
+
   useEffect(() => {
     let annule = false;
 
@@ -50,17 +54,19 @@ function VoituresSuggerees({ nombre = 100 }) {
 
   if (loading) {
     return (
-      <p className="text-center py-6">
-        Chargement des suggestions...
-      </p>
+      <section className="bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-14">
+        <p className="text-center text-sm font-bold uppercase tracking-[0.25em] text-emerald-700">
+          Chargement des suggestions...
+        </p>
+      </section>
     );
   }
 
   if (error) {
     return (
-      <p className="text-center py-6 text-red-600">
-        {error}
-      </p>
+      <section className="bg-white px-4 py-14">
+        <p className="text-center font-semibold text-red-600">{error}</p>
+      </section>
     );
   }
 
@@ -69,52 +75,82 @@ function VoituresSuggerees({ nombre = 100 }) {
   }
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Suggestions pour vous
-      </h2>
+    <section className="bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-14">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+              Sélection NOMADE
+            </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {voitures.map((v) => (
-          <div
-            key={v.id}
-            className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition flex flex-col justify-between"
-          >
-            <div>
-              {v.imageUrl ? (
-                <img
-                  src={getImageUrl(v.imageUrl)}
-                  alt={`${v.marque} ${v.modele}`}
-                  className="w-full h-40 object-cover"
-                />
-              ) : (
-                <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                  Aucune image
-                </div>
-              )}
-
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900">
-                  {v.marque} {v.modele}
-                </h3>
-
-                <p className="text-gray-700 font-medium mb-3">
-                  {v.prixParJour} €/jour
-                </p>
-              </div>
-            </div>
-
-            <div className="p-4 pt-0">
-             <button
-             type="button"
-               onClick={() => handleChoisir(v.id)}
-               className="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-md transition"
-  >
-    Voir & Réserver
-  </button>
-            </div>
+            <h2 className="text-3xl font-black uppercase tracking-wide text-slate-950 md:text-4xl">
+              Voitures suggérées pour votre trajet
+              <span className="text-amber-500">.</span>
+            </h2>
           </div>
-        ))}
+
+          <p className="max-w-md text-sm leading-relaxed text-slate-600">
+            Des véhicules disponibles, confortables et adaptés à vos déplacements
+            à Madagascar.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {voitures.map((v) => (
+            <article
+              key={v.id}
+              className="group flex overflow-hidden rounded-[1.5rem] bg-white shadow-lg shadow-emerald-900/10 ring-1 ring-emerald-100 transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-900/15"
+            >
+              <div className="flex w-full flex-col">
+                <div className="relative h-44 overflow-hidden bg-emerald-50">
+                  {v.imageUrl ? (
+                    <img
+                      src={getImageUrl(v.imageUrl)}
+                      alt={`${v.marque} ${v.modele}`}
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-emerald-700">
+                      <FiImage className="text-3xl" />
+                      <span className="text-sm font-semibold">
+                        Aucune image
+                      </span>
+                    </div>
+                  )}
+
+                  <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-black uppercase text-emerald-700 shadow-sm">
+                    <FiCheckCircle />
+                    Disponible
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="text-lg font-black uppercase tracking-wide text-slate-950">
+                    {v.marque} {v.modele}
+                  </h3>
+
+                  <div className="mt-3 flex items-end gap-1">
+                    <span className="text-2xl font-black text-emerald-700">
+                      {v.prixParJour}
+                    </span>
+                    <span className="pb-1 text-sm font-bold text-slate-500">
+                      €/jour
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleChoisir(v.id)}
+                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-black uppercase tracking-wide text-white shadow-md shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700"
+                  >
+                    Voir & réserver
+                    <FiArrowRight />
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {
+  FiCalendar,
+  FiCreditCard,
+  FiLogIn,
+  FiMapPin,
+  FiXCircle,
+} from "react-icons/fi";
 import { reservationService, getCurrentUser } from "../../services/api";
 
 const STATUT_STYLES = {
   EN_ATTENTE: "bg-amber-50 text-amber-700 border-amber-200",
-  CONFIRMEE: "bg-blue-50 text-blue-700 border-blue-200",
-  EN_COURS: "bg-purple-50 text-purple-700 border-purple-200",
-  TERMINEE: "bg-gray-50 text-gray-600 border-gray-200",
+  CONFIRMEE: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  EN_COURS: "bg-sky-50 text-sky-700 border-sky-200",
+  TERMINEE: "bg-slate-50 text-slate-600 border-slate-200",
   ANNULEE: "bg-red-50 text-red-600 border-red-200",
 };
 
@@ -79,122 +86,145 @@ function MesReservations() {
 
   if (!user || !user.id) {
     return (
-      <div className="max-w-md mx-auto bg-amber-50 border border-amber-200 p-8 rounded-2xl shadow-md my-16 text-center">
-        <h2 className="text-xl font-bold text-amber-800 mb-2">
-          Connexion requise
-        </h2>
+      <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-20">
+        <div className="mx-auto max-w-md rounded-[1.75rem] border border-amber-100 bg-white p-8 text-center shadow-xl shadow-emerald-900/10">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100 text-2xl text-amber-700">
+            <FiLogIn />
+          </div>
 
-        <p className="text-sm text-amber-700 mb-6">
-          Connectez-vous pour voir vos réservations.
-        </p>
+          <h2 className="text-2xl font-black uppercase tracking-wide text-slate-950">
+            Connexion requise
+          </h2>
 
-        <Link
-          to="/connexion"
-          className="inline-block bg-amber-600 hover:bg-amber-700 text-white text-base px-6 py-3 rounded-xl font-semibold transition shadow-sm"
-        >
-          Se connecter
-        </Link>
-      </div>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            Connectez-vous pour consulter vos réservations et suivre vos trajets
+            avec NOMADE.
+          </p>
+
+          <Link
+            to="/connexion"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-emerald-600 px-7 py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700"
+          >
+            Se connecter
+          </Link>
+        </div>
+      </section>
     );
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <p className="text-gray-500 text-lg">
+      <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-24">
+        <p className="text-center text-sm font-black uppercase tracking-[0.25em] text-emerald-700">
           Chargement de vos réservations...
         </p>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="text-3xl font-extrabold text-gray-900 mb-8">
-        Mes réservations
-      </h1>
-
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-5 py-4 rounded-xl mb-8">
-          {error}
-        </div>
-      )}
-
-      {reservations.length === 0 ? (
-        <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-2xl">
-          <p className="text-gray-400 text-lg mb-4">
-            Vous n'avez pas encore de réservation.
+    <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-9">
+          <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+            Espace client
           </p>
 
-          <Link
-            to="/"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-base px-6 py-3 rounded-xl font-semibold transition"
-          >
-            Découvrir nos véhicules
-          </Link>
+          <h1 className="text-3xl font-black uppercase tracking-wide text-slate-950 md:text-4xl">
+            Mes réservations
+            <span className="text-amber-500">.</span>
+          </h1>
+
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">
+            Retrouvez vos demandes de réservation, leurs statuts et les détails
+            de vos prochains déplacements avec NOMADE.
+          </p>
         </div>
-      ) : (
-        <div className="space-y-5">
-          {reservations.map((r) => {
-            const peutAnnuler =
-              r.statutReservation === "EN_ATTENTE" ||
-              r.statutReservation === "CONFIRMEE";
 
-            return (
-              <div
-                key={r.id}
-                className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5"
-              >
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-3 mb-2">
-                    <h3 className="text-lg font-bold text-gray-900">
-                      {r.voitureLibelle}
-                    </h3>
+        {error && (
+          <div className="mb-8 rounded-2xl border border-red-100 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
+            {error}
+          </div>
+        )}
 
-                    <span
-                      className={`text-xs font-semibold px-3 py-1 rounded-full border ${
-                        STATUT_STYLES[r.statutReservation] || ""
-                      }`}
-                    >
-                      {STATUT_LABELS[r.statutReservation] ||
-                        r.statutReservation}
-                    </span>
+        {reservations.length === 0 ? (
+          <div className="rounded-[1.75rem] border-2 border-dashed border-emerald-200 bg-white/70 px-6 py-20 text-center shadow-sm">
+            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-700">
+              <FiMapPin />
+            </div>
+
+            <p className="text-lg font-bold text-slate-600">
+              Vous n’avez pas encore de réservation.
+            </p>
+
+            <Link
+              to="/voitures"
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-600 px-7 py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700"
+            >
+              Découvrir nos véhicules
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {reservations.map((r) => {
+              const peutAnnuler =
+                r.statutReservation === "EN_ATTENTE" ||
+                r.statutReservation === "CONFIRMEE";
+
+              return (
+                <article
+                  key={r.id}
+                  className="flex flex-col gap-5 rounded-[1.5rem] border border-emerald-100 bg-white p-6 shadow-lg shadow-emerald-900/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/15 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="flex-1">
+                    <div className="mb-3 flex flex-wrap items-center gap-3">
+                      <h3 className="text-xl font-black uppercase tracking-wide text-slate-950">
+                        {r.voitureLibelle}
+                      </h3>
+
+                      <span
+                        className={`rounded-full border px-3 py-1 text-xs font-black uppercase ${
+                          STATUT_STYLES[r.statutReservation] || ""
+                        }`}
+                      >
+                        {STATUT_LABELS[r.statutReservation] ||
+                          r.statutReservation}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 text-sm font-semibold text-slate-600">
+                      <span className="flex items-center gap-2">
+                        <FiCalendar className="text-emerald-700" />
+                        Du {r.dateDebut} au {r.dateFin}
+                      </span>
+
+                      <span className="flex items-center gap-2">
+                        <FiCreditCard className="text-emerald-700" />
+                        {r.montantTotal} €
+                      </span>
+                    </div>
                   </div>
 
-                  <p className="text-sm text-gray-500 mb-1">
-                    Du{" "}
-                    <span className="font-medium text-gray-700">
-                      {r.dateDebut}
-                    </span>{" "}
-                    au{" "}
-                    <span className="font-medium text-gray-700">
-                      {r.dateFin}
-                    </span>
-                  </p>
-
-                  <p className="text-xl text-gray-900 font-bold mt-2">
-                    {r.montantTotal} €
-                  </p>
-                </div>
-
-                {peutAnnuler && (
-                  <button
-                    type="button"
-                    onClick={() => handleAnnuler(r.id)}
-                    disabled={annulationEnCours === r.id}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white text-base font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-[0.98]"
-                  >
-                    {annulationEnCours === r.id
-                      ? "Annulation..."
-                      : "Annuler la réservation"}
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
+                  {peutAnnuler && (
+                    <button
+                      type="button"
+                      onClick={() => handleAnnuler(r.id)}
+                      disabled={annulationEnCours === r.id}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-red-50 px-6 py-3 text-sm font-black uppercase tracking-wide text-red-600 ring-1 ring-red-100 transition duration-300 hover:bg-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                    >
+                      <FiXCircle />
+                      {annulationEnCours === r.id
+                        ? "Annulation..."
+                        : "Annuler"}
+                    </button>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 

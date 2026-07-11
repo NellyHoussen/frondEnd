@@ -1,10 +1,20 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
+  FiArrowLeft,
+  FiCalendar,
+  FiCheckCircle,
+  FiClock,
+  FiCreditCard,
+  FiLogIn,
+  FiUser,
+} from "react-icons/fi";
+import {
   voitureService,
   clientService,
   reservationService,
   getCurrentUser,
+  getImageUrl,
 } from "../../services/api";
 
 function PageReservation() {
@@ -155,175 +165,255 @@ function PageReservation() {
       });
   };
 
+  const inputClass =
+    "w-full rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100";
+
+  const labelClass = "mb-2 block text-xs font-black uppercase tracking-wide text-slate-500";
+
   if (!user || !user.id) {
     return (
-      <div className="max-w-md mx-auto bg-amber-50 border border-amber-200 p-6 rounded-lg shadow-md my-10 text-center">
-        <h2 className="text-lg font-bold text-amber-800 mb-2">
-          Connexion requise
-        </h2>
-        <p className="text-sm text-amber-700 mb-4">
-          Vous devez être connecté pour réserver.
-        </p>
-        <Link
-          to="/connexion"
-          className="inline-block bg-amber-600 hover:bg-amber-700 text-white text-sm px-4 py-2 rounded font-medium transition"
-        >
-          Se connecter
-        </Link>
-      </div>
+      <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-20">
+        <div className="mx-auto max-w-md rounded-[1.75rem] border border-amber-100 bg-white p-8 text-center shadow-xl shadow-emerald-900/10">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100 text-2xl text-amber-700">
+            <FiLogIn />
+          </div>
+
+          <h2 className="text-2xl font-black uppercase tracking-wide text-slate-950">
+            Connexion requise
+          </h2>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            Vous devez être connecté pour réserver ce véhicule avec NOMADE.
+          </p>
+
+          <Link
+            to="/connexion"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-emerald-600 px-7 py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700"
+          >
+            Se connecter
+          </Link>
+        </div>
+      </section>
     );
   }
 
   if (chargementVoiture || !voiture) {
     return (
-      <p className="text-center py-10 text-gray-500">
-        Chargement des détails du véhicule...
-      </p>
+      <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-24">
+        <p className="text-center text-sm font-black uppercase tracking-[0.25em] text-emerald-700">
+          Chargement du véhicule...
+        </p>
+      </section>
     );
   }
 
   const aujourdhui = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md my-10 border border-gray-100">
-      <h2 className="text-xl font-bold mb-1 text-gray-800">
-        Réserver : {voiture.marque} {voiture.modele}
-      </h2>
-      <p className="text-sm text-gray-500 mb-6">
-        {voiture.prixParJour} €/jour
-      </p>
+    <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="mb-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black uppercase tracking-wide text-emerald-700 ring-1 ring-emerald-100 shadow-sm transition duration-300 hover:bg-emerald-600 hover:text-white"
+        >
+          <FiArrowLeft />
+          Retour
+        </button>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <fieldset className="border rounded-md p-4">
-          <legend className="text-xs font-semibold text-gray-600 px-1">
-            Vos informations
-          </legend>
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <aside className="overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-emerald-900/10 ring-1 ring-emerald-100">
+            <div className="relative h-72 bg-emerald-50">
+              {voiture.imageUrl ? (
+                <img
+                  src={getImageUrl(voiture.imageUrl)}
+                  alt={`${voiture.marque} ${voiture.modele}`}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm font-bold text-emerald-700">
+                  Aucune image disponible
+                </div>
+              )}
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Nom
-              </label>
-              <input
-                name="nom"
-                value={form.nom}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
+              <span className="absolute left-5 top-5 rounded-full bg-white/90 px-4 py-2 text-xs font-black uppercase text-emerald-700 shadow-sm">
+                Disponible
+              </span>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Prénom
-              </label>
-              <input
-                name="prenom"
-                value={form.prenom}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
+            <div className="p-6">
+              <p className="mb-2 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+                Votre véhicule
+              </p>
+
+              <h1 className="text-3xl font-black uppercase tracking-wide text-slate-950">
+                {voiture.marque} {voiture.modele}
+              </h1>
+
+              <div className="mt-5 grid gap-3">
+                <div className="flex items-center justify-between rounded-2xl bg-emerald-50 px-4 py-3">
+                  <span className="flex items-center gap-2 text-sm font-bold text-slate-600">
+                    <FiCreditCard className="text-emerald-700" />
+                    Tarif journalier
+                  </span>
+
+                  <span className="text-xl font-black text-emerald-700">
+                    {voiture.prixParJour} €/jour
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800">
+                  <FiClock />
+                  Votre demande sera vérifiée avant confirmation.
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <div className="rounded-[2rem] bg-white p-6 shadow-xl shadow-emerald-900/10 ring-1 ring-emerald-100 sm:p-8">
+            <div className="mb-7">
+              <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+                Finaliser la réservation
+              </p>
+
+              <h2 className="text-3xl font-black uppercase tracking-wide text-slate-950">
+                Vos informations
+                <span className="text-amber-500">.</span>
+              </h2>
+
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                Vérifiez vos coordonnées, choisissez vos dates, puis envoyez
+                votre demande de réservation.
+              </p>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-7">
+              <fieldset>
+                <legend className="mb-4 flex items-center gap-2 text-sm font-black uppercase tracking-wide text-slate-900">
+                  <FiUser className="text-emerald-700" />
+                  Coordonnées
+                </legend>
 
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Téléphone
-              </label>
-              <input
-                name="telephone"
-                value={form.telephone}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
-            </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className={labelClass}>Nom</label>
+                    <input
+                      name="nom"
+                      value={form.nom}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>Prénom</label>
+                    <input
+                      name="prenom"
+                      value={form.prenom}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>Téléphone</label>
+                    <input
+                      name="telephone"
+                      value={form.telephone}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend className="mb-4 flex items-center gap-2 text-sm font-black uppercase tracking-wide text-slate-900">
+                  <FiCalendar className="text-emerald-700" />
+                  Période de réservation
+                </legend>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className={labelClass}>Date de début</label>
+                    <input
+                      type="date"
+                      name="dateDebut"
+                      min={aujourdhui}
+                      value={form.dateDebut}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>Date de fin</label>
+                    <input
+                      type="date"
+                      name="dateFin"
+                      min={form.dateDebut || aujourdhui}
+                      value={form.dateFin}
+                      onChange={handleChange}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              {status.message && (
+                <div
+                  className={`rounded-2xl px-5 py-4 text-sm font-bold ${
+                    status.type === "error"
+                      ? "bg-red-50 text-red-600 ring-1 ring-red-100"
+                      : status.type === "success"
+                      ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100"
+                      : "bg-amber-50 text-amber-700 ring-1 ring-amber-100"
+                  }`}
+                >
+                  {status.message}
+                </div>
+              )}
+
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => navigate(-1)}
+                  className="rounded-full bg-slate-100 px-6 py-3 text-sm font-black uppercase tracking-wide text-slate-600 transition duration-300 hover:bg-slate-200"
+                >
+                  Annuler
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={status.loading}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <FiCheckCircle />
+                  {status.loading ? "Envoi..." : "Confirmer"}
+                </button>
+              </div>
+            </form>
           </div>
-        </fieldset>
-
-        <fieldset className="border rounded-md p-4">
-          <legend className="text-xs font-semibold text-gray-600 px-1">
-            Période de réservation
-          </legend>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Date de début
-              </label>
-              <input
-                type="date"
-                name="dateDebut"
-                min={aujourdhui}
-                value={form.dateDebut}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">
-                Date de fin
-              </label>
-              <input
-                type="date"
-                name="dateFin"
-                min={form.dateDebut || aujourdhui}
-                value={form.dateFin}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-                required
-              />
-            </div>
-          </div>
-        </fieldset>
-
-        {status.message && (
-          <div
-            className={`p-3 rounded text-sm text-center font-medium ${
-              status.type === "error"
-                ? "bg-red-50 text-red-600"
-                : "bg-green-50 text-green-600"
-            }`}
-          >
-            {status.message}
-          </div>
-        )}
-
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="px-4 py-2 border rounded text-sm text-gray-700 hover:bg-gray-50"
-          >
-            Annuler
-          </button>
-
-          <button
-            type="submit"
-            disabled={status.loading}
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded text-sm transition"
-          >
-            {status.loading ? "Envoi..." : "Confirmer"}
-          </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </section>
   );
 }
 

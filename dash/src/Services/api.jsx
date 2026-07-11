@@ -136,7 +136,22 @@ export const reservationService = {
 
   getByClient: (clientId) => request(`/reservations/client/${clientId}`),
 
-  annuler: (id) => request(`/reservations/${id}`, {
+  annuler: (id) => request(`/reservations/${id}/annuler`, {
+    method: 'PATCH',
+  }),
+
+  // --- Admin ---
+  getAll: () => request('/reservations'),
+
+  confirmer: (id) => request(`/reservations/${id}/statut?valeur=CONFIRMEE`, {
+    method: 'PATCH',
+  }),
+
+  rejeter: (id) => request(`/reservations/${id}/statut?valeur=REJETEE`, {
+    method: 'PATCH',
+  }),
+
+  supprimer: (id) => request(`/reservations/${id}`, {
     method: 'DELETE',
   }),
 };

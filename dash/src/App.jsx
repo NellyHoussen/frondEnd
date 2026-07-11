@@ -9,7 +9,7 @@ import Inscription from "./Pages/Inscription";
 import AjouterVoiture from "./Pages/Voiture/AjouteVoiture";
 import PageReservation from "./Pages/Reservation/PageReservation"
 import MesReservations from "./Pages/Reservation/MesReservation"
-
+import AdminReservations from "./Pages/Reservation/AdminReservation"
 function App() {
    /*
   h-* : hauteur
@@ -41,7 +41,8 @@ function App() {
         <Route path="/Inscription" element={<Inscription />} />
         <Route path="/admin/ajouter-voiture" element={<AjouterVoiture />} />
         <Route path="/reservation/:voitureId" element={<PageReservation />} />
-      <Route path="/mes-reservations" element={<MesReservations />} />
+         <Route path="/mes-reservations" element={<MesReservations />} />
+          <Route path="/admin/reservations" element={<AdminReservations />} />
 
       </Routes>
     </BrowserRouter>    
