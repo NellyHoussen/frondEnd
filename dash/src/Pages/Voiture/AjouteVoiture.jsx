@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FiArrowRight,
+  FiDollarSign,
+  FiHash,
+  FiImage,
+  FiTruck,
+  FiCheckCircle,
+} from "react-icons/fi";
 import { voitureService, isAdmin } from "../../services/api";
 
 export default function AjouteVoiture() {
@@ -28,10 +36,10 @@ export default function AjouteVoiture() {
 
   if (!isAdmin()) {
     return (
-      <div className="max-w-md mx-auto px-4 py-10 text-center">
-        <p className="text-red-600 font-medium">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4">
+        <div className="rounded-2xl border border-red-100 bg-red-50 px-6 py-5 text-center text-sm font-bold text-red-600">
           Accès réservé aux administrateurs.
-        </p>
+        </div>
       </div>
     );
   }
@@ -106,119 +114,168 @@ export default function AjouteVoiture() {
     }
   }
 
+  const inputClass =
+    "w-full rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100";
+
+  const labelClass =
+    "mb-2 block text-xs font-black uppercase tracking-wide text-slate-500";
+
   return (
-    <div className="max-w-xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Ajouter une voiture
-      </h1>
+    <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-2xl">
+        <div className="rounded-[2rem] bg-white p-6 shadow-xl shadow-emerald-900/10 ring-1 ring-emerald-100 sm:p-8">
+          <div className="mb-7">
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-700">
+              <FiTruck />
+            </div>
 
-      {success && (
-        <div className="mb-4 rounded-md bg-green-50 border border-green-200 px-4 py-3 text-green-700 flex justify-between items-center gap-4">
-          <span>Véhicule ajouté avec succès !</span>
+            <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.3em] text-emerald-700">
+              Espace administrateur
+            </p>
 
-          <button
-            type="button"
-            onClick={() => navigate("/voitures")}
-            className="text-sm underline"
-          >
-            Voir le catalogue
-          </button>
-        </div>
-      )}
+            <h1 className="text-3xl font-black uppercase tracking-wide text-slate-950 md:text-4xl">
+              Ajouter une voiture
+              <span className="text-amber-500">.</span>
+            </h1>
 
-      {error && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-red-700">
-          {error}
-        </div>
-      )}
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
+              Complétez les informations du véhicule pour l'ajouter au
+              catalogue NOMADE.
+            </p>
+          </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 bg-white shadow rounded-lg p-6"
-      >
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Marque
-          </label>
-          <input
-            type="text"
-            name="marque"
-            value={form.marque}
-            onChange={handleChange}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Modèle
-          </label>
-          <input
-            type="text"
-            name="modele"
-            value={form.modele}
-            onChange={handleChange}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Immatriculation
-          </label>
-          <input
-            type="text"
-            name="immatriculation"
-            value={form.immatriculation}
-            onChange={handleChange}
-            placeholder="Ex: 1234 AB 56"
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Prix/jour (€)
-          </label>
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            name="prixParJour"
-            value={form.prixParJour}
-            onChange={handleChange}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Photo du véhicule
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-
-          {preview && (
-            <img
-              src={preview}
-              alt="Aperçu"
-              className="mt-3 w-full h-48 object-cover rounded-md border border-gray-200"
-            />
+          {success && (
+            <div className="mb-6 flex items-center justify-between gap-4 rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4 text-sm font-bold text-emerald-700">
+              <span className="flex items-center gap-2">
+                <FiCheckCircle /> Véhicule ajouté avec succès !
+              </span>
+              <button
+                type="button"
+                onClick={() => navigate("/voitures")}
+                className="font-black text-emerald-800 underline hover:text-emerald-900"
+              >
+                Voir le catalogue
+              </button>
+            </div>
           )}
-        </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium py-2 px-4 rounded-md transition"
-        >
-          {loading ? "Ajout en cours..." : "Ajouter la voiture"}
-        </button>
-      </form>
-    </div>
+          {error && (
+            <div className="mb-6 rounded-2xl border border-red-100 bg-red-50 px-5 py-4 text-sm font-bold text-red-600">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="marque" className={labelClass}>
+                  Marque
+                </label>
+                <input
+                  id="marque"
+                  name="marque"
+                  type="text"
+                  placeholder="Ex: Toyota"
+                  value={form.marque}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="modele" className={labelClass}>
+                  Modèle
+                </label>
+                <input
+                  id="modele"
+                  name="modele"
+                  type="text"
+                  placeholder="Ex: Land Cruiser"
+                  value={form.modele}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="immatriculation" className={labelClass}>
+                Immatriculation
+              </label>
+              <div className="relative">
+                <FiHash className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-emerald-700" />
+                <input
+                  id="immatriculation"
+                  name="immatriculation"
+                  type="text"
+                  placeholder="Ex: 1234 AB 56"
+                  value={form.immatriculation}
+                  onChange={handleChange}
+                  className={`${inputClass} pl-11`}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="prixParJour" className={labelClass}>
+                Prix par jour
+              </label>
+              <div className="relative">
+                <FiDollarSign className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-emerald-700" />
+                <input
+                  id="prixParJour"
+                  name="prixParJour"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
+                  value={form.prixParJour}
+                  onChange={handleChange}
+                  className={`${inputClass} pl-11`}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="image" className={labelClass}>
+                Photo du véhicule
+              </label>
+
+              <label
+                htmlFor="image"
+                className="flex cursor-pointer items-center gap-3 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50/40 px-4 py-4 text-sm font-semibold text-emerald-700 transition hover:border-emerald-400 hover:bg-emerald-50"
+              >
+                <FiImage className="text-lg" />
+                {image ? image.name : "Choisir une image"}
+              </label>
+              <input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Aperçu"
+                  className="mt-4 h-48 w-full rounded-2xl border border-emerald-100 object-cover"
+                />
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-500/20 transition duration-300 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Ajout en cours..." : "Ajouter la voiture"}
+              <FiArrowRight />
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
   );
 }
