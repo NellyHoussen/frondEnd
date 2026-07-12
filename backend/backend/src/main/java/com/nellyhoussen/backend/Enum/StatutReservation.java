@@ -5,5 +5,5 @@ public enum StatutReservation {
     EN_COURS,
     TERMINEE,
     ANNULEE,
-    REJETE
+    REJETEE
 }

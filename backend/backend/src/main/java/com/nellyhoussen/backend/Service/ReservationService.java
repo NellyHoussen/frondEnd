@@ -36,11 +36,12 @@ public class ReservationService implements ReservationImplements {
     private final ReservationMapper reservationMapper;
     private final ClientServiceImplements clientService;
     private static final Map<StatutReservation, Set<StatutReservation>> TRANSITIONS_AUTORISEES = Map.of(
-            StatutReservation.EN_ATTENTE, EnumSet.of(StatutReservation.CONFIRMEE, StatutReservation.ANNULEE),
-            StatutReservation.CONFIRMEE, EnumSet.of(StatutReservation.EN_COURS, StatutReservation.ANNULEE),
+            StatutReservation.EN_ATTENTE, EnumSet.of(StatutReservation.CONFIRMEE, StatutReservation.ANNULEE, StatutReservation.REJETEE),
+            StatutReservation.CONFIRMEE, EnumSet.of(StatutReservation.EN_COURS, StatutReservation.ANNULEE, StatutReservation.REJETEE),
             StatutReservation.EN_COURS, EnumSet.of(StatutReservation.TERMINEE),
             StatutReservation.TERMINEE, EnumSet.noneOf(StatutReservation.class),
-            StatutReservation.ANNULEE, EnumSet.noneOf(StatutReservation.class)
+            StatutReservation.ANNULEE, EnumSet.noneOf(StatutReservation.class),
+            StatutReservation.REJETEE, EnumSet.noneOf(StatutReservation.class)
     );
 
     @Override
@@ -116,7 +117,7 @@ public class ReservationService implements ReservationImplements {
     public void supprimer(Long id) {
         Reservation reservation = findBy(id);
         if (reservation.getStatut() != StatutReservation.ANNULEE
-                && reservation.getStatut() != StatutReservation.REJETE) {
+                && reservation.getStatut() != StatutReservation.REJETEE) {
             throw new BusinessRuleException(
                     "Seules les réservations annulées ou rejetées peuvent être supprimées définitivement");
         }
